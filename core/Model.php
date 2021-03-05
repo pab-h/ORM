@@ -173,6 +173,43 @@
             return $query($this->link);
         }
 
+        public function create(array $need): array {
+            $table_name = $this->table['name'];
+
+            $fields = array_keys($this->table['fields']);
+            $sql = "INSERT INTO `$table_name`(";
+
+            $fields_to_insert = array_map(function(string $field){
+                if($field != $this->table['options']->primary_key) {
+                    return "`$field`";
+                }
+            }, $fields);
+
+            for($i = 0; $i < count($fields_to_insert); $i++) {
+                if(is_null($fields_to_insert[$i])) {
+                    unset($fields_to_insert[$i]);
+                }
+            }
+
+            $field_to_insert = implode(', ', $fields_to_insert);
+
+            $sql .= $field_to_insert.") VALUES (";
+
+            $values_to_insert = array_map(function($value){
+                return "'$value'";
+            }, $need);
+
+            $value_to_insert = implode(', ', $values_to_insert);
+
+            $sql .= $value_to_insert.");";
+
+            $this->link->query($sql);
+
+            $last_id = $this->link->insert_id;
+
+            return $this->find_by_pk($last_id);
+        }
+
     }
 
 ?>
