@@ -8,7 +8,7 @@
         public function __construct(
             string $type, 
             bool $allow_null,
-            bool $auto_increment = false ,
+            bool $auto_increment = false,
             bool $unique = false
         ) {
             $this->type = $type;
