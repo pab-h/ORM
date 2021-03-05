@@ -44,13 +44,18 @@
             }, $fields_name);
 
             $sql .= implode(', ', $sql_fields);
+
+            if($this->table['options']->timestamp) {
+                $sql .= ",
+                `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
+                `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP 
+                    ON UPDATE CURRENT_TIMESTAMP    
+                ";
+            }
+
             $primary_key = $this->table['options']->primary_key;
+            $sql .= ", PRIMARY KEY(`$primary_key`));";
 
-            $sql .= ", PRIMARY KEY(`$primary_key`)";
-
-            $sql .= ");";
-
-            $sql = $this->link->real_escape_string($sql);
             $this->link->query($sql);
         }
 
@@ -162,6 +167,10 @@
                 "DELETE FROM `$table_name` 
                     WHERE `$pk_field`='$pk';"
             );
+        }
+
+        public function query(callable $query) {
+            return $query($this->link);
         }
 
     }
