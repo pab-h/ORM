@@ -1,6 +1,6 @@
 <?php 
-    require_once __DIR__.'/Link.php';
-    require_once __DIR__.'/Model.php';
+    require_once __DIR__.'/core/Link.php';
+    require_once __DIR__.'/core/Model.php';
 
     final class ORM extends Link {
         public function __construct(string $host, string $user, string $pass, string $db) {
