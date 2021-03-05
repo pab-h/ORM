@@ -121,6 +121,28 @@
             return $result;
         }
 
+        public function find_all(array $where): array {
+            $table_name = $this->table['name'];
+            $where_clasule = $this->create_where_clasule($where);
+
+            $result = $this->link->query(
+                "SELECT * FROM `$table_name`
+                    $where_clasule;"
+            );
+            // ->fetch_assoc();
+
+            if(!($this->link->affected_rows > 0)) {
+                throw new Exception("NOT FOUND", 404);   
+            } 
+
+            $results = array();
+            while($rows = $result->fetch_assoc()) {
+                array_push($results, $rows);
+            }
+
+            return $results;
+        }
+
     }
 
 ?>
