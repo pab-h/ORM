@@ -74,6 +74,18 @@
             return $is_valid;
         }
 
+        private function create_where_clasule(array $where): string {
+            $conditions = array_map(function(array $condition){
+                $field = $condition["field"];
+                $value = $condition["value"];
+
+                return "`$field`='$value'";
+            }, $where);
+
+            $condition = implode(" AND ", $conditions);
+
+            return "WHERE ".$condition;
+        }
 
         public function find_by_pk($pk): array {
             $table_name = $this->table['name'];
@@ -84,8 +96,26 @@
                     WHERE `$pk_field`='$pk';"
             )
             ->fetch_assoc();
+
             if(is_null($result)) {
-                throw new Exception("NOT FOUND");   
+                throw new Exception("NOT FOUND", 404);   
+            }
+
+            return $result;
+        }
+
+        public function find_one(array $where): array {
+            $table_name = $this->table['name'];
+            $where_clasule = $this->create_where_clasule($where);
+
+            $result = $this->link->query(
+                "SELECT * FROM `$table_name`
+                    $where_clasule;"
+            )
+            ->fetch_assoc();
+
+            if(is_null($result)) {
+                throw new Exception("NOT FOUND", 404);   
             }
 
             return $result;
