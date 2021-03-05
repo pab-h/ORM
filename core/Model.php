@@ -129,7 +129,6 @@
                 "SELECT * FROM `$table_name`
                     $where_clasule;"
             );
-            // ->fetch_assoc();
 
             if(!($this->link->affected_rows > 0)) {
                 throw new Exception("NOT FOUND", 404);   
@@ -141,6 +140,17 @@
             }
 
             return $results;
+        }
+
+        public function update($pk, string $field, $new_value): void {
+            $pk_field = $this->table['options']->primary_key;
+            $this->find_by_pk($pk);
+            
+            $table_name = $this->table['name'];
+            $this->link->query(
+                "UPDATE `$table_name` SET `$field`='$new_value'
+                    WHERE `$pk_field`=$pk;"
+            );
         }
 
     }
