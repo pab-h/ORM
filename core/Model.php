@@ -153,6 +153,17 @@
             );
         }
 
+        public function delete($pk): void {
+            $pk_field = $this->table['options']->primary_key;
+            $this->find_by_pk($pk);
+
+            $table_name = $this->table['name'];
+            $this->link->query(
+                "DELETE FROM `$table_name` 
+                    WHERE `$pk_field`='$pk';"
+            );
+        }
+
     }
 
 ?>
