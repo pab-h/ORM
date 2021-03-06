@@ -49,7 +49,7 @@
                 $sql .= ",
                 `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP 
-                    ON UPDATE CURRENT_TIMESTAMP,    
+                             ON UPDATE CURRENT_TIMESTAMP,    
                 ";
             }
 
@@ -60,8 +60,12 @@
                 $foreign_key = $this->table['options']->foreign_key['field'];
                 $table = $this->table['options']->foreign_key['references']['table'];
                 $field = $this->table['options']->foreign_key['references']['field'];
+                $change = $this->table['options']->foreign_key['change'];
 
-                $sql .= ", FOREIGN KEY (`$foreign_key`) REFERENCES `$table`(`$field`)";
+                $sql .= ", FOREIGN KEY (`$foreign_key`) REFERENCES `$table`(`$field`)
+                            ON DELETE $change
+                            ON UPDATE $change
+                ";
             }
 
             $sql .= ");";
@@ -179,7 +183,7 @@
             );
         }
 
-        public function create(array $need): array {
+        public function create(... $need): array {
             $table_name = $this->table['name'];
 
             $fields = array_keys($this->table['fields']);
