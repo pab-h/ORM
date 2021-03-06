@@ -47,14 +47,24 @@
 
             if($this->table['options']->timestamp) {
                 $sql .= ",
-                `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
+                `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP 
-                    ON UPDATE CURRENT_TIMESTAMP    
+                    ON UPDATE CURRENT_TIMESTAMP,    
                 ";
             }
 
             $primary_key = $this->table['options']->primary_key;
-            $sql .= ", PRIMARY KEY(`$primary_key`));";
+            $sql .= "PRIMARY KEY(`$primary_key`)";
+            
+            if($this->table['options']->foreign_key != array()) {
+                $foreign_key = $this->table['options']->foreign_key['field'];
+                $table = $this->table['options']->foreign_key['references']['table'];
+                $field = $this->table['options']->foreign_key['references']['field'];
+
+                $sql .= ", FOREIGN KEY (`$foreign_key`) REFERENCES `$table`(`$field`)";
+            }
+
+            $sql .= ");";
 
             $this->link->query($sql);
         }
@@ -169,10 +179,6 @@
             );
         }
 
-        public function query(callable $query) {
-            return $query($this->link);
-        }
-
         public function create(array $need): array {
             $table_name = $this->table['name'];
 
@@ -208,6 +214,10 @@
             $last_id = $this->link->insert_id;
 
             return $this->find_by_pk($last_id);
+        }
+
+        public function query(callable $query) {
+            return $query($this->link);
         }
 
     }

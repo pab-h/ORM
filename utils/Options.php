@@ -6,9 +6,9 @@
         public bool $timestamp;
 
         public function __construct(
+            string $primary_key,
             bool $force = false,
             bool $timestamp = true,
-            string $primary_key,
             array $foreign_key = array(
                 'field' => '',
                 'references' => '',
