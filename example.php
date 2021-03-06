@@ -1,6 +1,4 @@
 <?php
-    // header("content-type: application/json");
-
     require_once __DIR__.'/utils/Options.php';
     require_once __DIR__.'/utils/DataTypes.php';
     require_once __DIR__.'/utils/Field.php';

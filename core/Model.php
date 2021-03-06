@@ -1,7 +1,7 @@
 <?php
     final class Model {
         private mysqli $link;
-        public array $table;
+        private array $table;
 
         public function __construct(mysqli $link, array $table) {   
             $this->link = $link;
