@@ -55,7 +55,4 @@
             )
         )
     ));
-
-    // echo json_encode($tells->table);
-
 ?>
