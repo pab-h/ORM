@@ -11,22 +11,36 @@
             bool $timestamp = true,
             array $foreign_key = array(
                 'field' => '',
-                'references' => '',
-                'change' => 'CASCADE'
+                'references' => array(
+                    'table' => '',
+                    'field' => ''
+                ),
+                'change' => ''
             )
         ) {
             $this->primary_key = $primary_key;
             $this->force = $force;
             $this->timestamp = $timestamp;
             $this->foreign_key = $foreign_key;
-            
-            $ok_keys = key_exists('field', $this->foreign_key) && 
-                       key_exists('references', $this->foreign_key) &&
-                       key_exists('change', $this->foreign_key);
-            $ok_values = $this->foreign_key['field'] !== '' && 
-                         $this->foreign_key['references'] !== '' &&
-                         $this->foreign_key['change'] !== '';
-                       
+
+            $empty_foreign_key = array(
+                'field' => '',
+                'references' => array(
+                    'table' => '',
+                    'field' => ''
+                ),
+                'change' => ''
+            );
+
+            $need_keys_to_foreign_key = array('field', 'references', 'change');
+            $need_keys_to_references = array('table', 'field');
+
+            $ok_keys = array_keys($this->foreign_key) == $need_keys_to_foreign_key;
+            $ok_keys = $ok_keys && array_keys($this->foreign_key['references']) == $need_keys_to_references;
+
+
+            $ok_values = $this->foreign_key != $empty_foreign_key;
+
             if(!($ok_keys && $ok_values)) {
                 $this->foreign_key = array();
             }
