@@ -1,7 +1,7 @@
 <?php
     final class Model {
         private mysqli $link;
-        private array $table;
+        public array $table;
 
         public function __construct(mysqli $link, array $table) {   
             $this->link = $link;
@@ -56,16 +56,20 @@
             $primary_key = $this->table['options']->primary_key;
             $sql .= "PRIMARY KEY(`$primary_key`)";
             
-            if($this->table['options']->foreign_key != array()) {
-                $foreign_key = $this->table['options']->foreign_key['field'];
-                $table = $this->table['options']->foreign_key['references']['table'];
-                $field = $this->table['options']->foreign_key['references']['field'];
-                $change = $this->table['options']->foreign_key['change'];
 
-                $sql .= ", FOREIGN KEY (`$foreign_key`) REFERENCES `$table`(`$field`)
-                            ON DELETE $change
-                            ON UPDATE $change
-                ";
+
+            if($this->table['options']->foreign_keys != array()) {
+                foreach($this->table['options']->foreign_keys as $foreign_key) {
+                    $foreign_field = $foreign_key['field'];
+                    $table = $foreign_key['references']['table'];
+                    $field = $foreign_key['references']['field'];
+                    $change = $foreign_key['change'];
+
+                    $sql .= ", FOREIGN KEY (`$foreign_field`) REFERENCES `$table`(`$field`)
+                                ON DELETE $change
+                                ON UPDATE $change
+                    ";
+                }
             }
 
             $sql .= ");";
