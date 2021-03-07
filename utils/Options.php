@@ -49,8 +49,6 @@
                              $foreign_key['change'] != $empty_foreign_key['change'] &&
                              $foreign_key['references']['table'] != $empty_foreign_key['references']['table'] &&
                              $foreign_key['references']['field'] != $empty_foreign_key['references']['field'];
-
-                
             }
 
             if(!($ok_keys && $ok_values)) {
