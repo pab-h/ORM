@@ -218,6 +218,9 @@
             $sql .= $value_to_insert.");";
 
             $this->link->query($sql);
+            if(!($this->link->affected_rows > 0)) {
+                throw new Exception("AN ERROR OCCURRED WHILE CREATING THE NEW RECORD", 404);   
+            } 
 
             $last_id = $this->link->insert_id;
 
