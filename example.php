@@ -6,7 +6,7 @@
     require_once __DIR__.'/ORM.php';
     $orm = new ORM('YOUR HOST', 'YOUR USER', 'YOUR PASSWORD', 'YOUR DATABSE');
 
-    $user = $orm->define(array(
+    $users = $orm->define(array(
         'name' => 'users',
         'fields' => array(
             'id' => new Field(
@@ -17,7 +17,7 @@
             'name' => new Field(
                 DataTypes::STRING,
                 false
-            )
+            ),
         ),
         'options' => new Options('id')
     ));
@@ -30,12 +30,12 @@
                 false,
                 true
             ),
-            'owner' => new Field(
+            'user' => new Field(
                 DataTypes::INT,
                 false
             ),
             'tell' => new Field(
-                DataTypes::INT,
+                DataTypes::STRING,
                 false
             )
         ),
@@ -44,12 +44,14 @@
             false,
             true,
             array(
-                'field' => 'owner',
-                'references' => array(
-                    'table' => 'users',
-                    'field' => 'id'
-                ),
-                'change' => 'CASCADE'
+                array(
+                    'field' => 'user',
+                    'references' => array(
+                        'table' => 'users',
+                        'field' => 'id'
+                    ),
+                    'change' => 'CASCADE'
+                )
             )
         )
     ));

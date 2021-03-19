@@ -98,12 +98,11 @@
         }
 
         private function create_where_clasule(array $where): string {
-            $conditions = array_map(function(array $condition){
-                $field = $condition["field"];
-                $value = $condition["value"];
+            $fields = array_keys($where);
 
+            $conditions = array_map(function($field, $value){
                 return "`$field`='$value'";
-            }, $where);
+            }, $fields, $where);
 
             $condition = implode(" AND ", $conditions);
 
