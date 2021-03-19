@@ -49,12 +49,12 @@
                 $sql .= ",
                 `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP 
-                             ON UPDATE CURRENT_TIMESTAMP,    
+                             ON UPDATE CURRENT_TIMESTAMP    
                 ";
             }
 
             $primary_key = $this->table['options']->primary_key;
-            $sql .= " PRIMARY KEY(`$primary_key`)";
+            $sql .= ", PRIMARY KEY(`$primary_key`)";
             
 
 
