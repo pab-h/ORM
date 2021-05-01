@@ -36,6 +36,10 @@
                     $sql_field .= "NOT NULL";
                 }
 
+                if($field_config->unique) {
+                    $sql_field .= " UNIQUE";
+                }
+
                 if($field_config->auto_increment) {
                     $sql_field .= " AUTO_INCREMENT";
                 }
